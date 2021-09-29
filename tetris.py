@@ -159,4 +159,12 @@ def valid_space(shape, grid):#Checks if the shape is moving to an open space/ no
                 return False
     return True
 
+def check_lost(positions): #Lose - when any of the positions passed the top of the game grid - it's y is less than 1
+    for pos in positions:
+        x,y = pos
+        if y < 1: #The y value of the top of the game screen is 1. If we are below it - the game is lost.
+            return True
+    return False
+
+
 
