@@ -171,4 +171,11 @@ def get_shape(): #Creates an instance of the Piece class - giving it it's initia
     #x=5 - The piece will fall from point (5,0)
 
 
+def draw_text_middle(text, size, color, surface):
+    font = pygame.font.SysFont('comicsans', size, bold=True)
+    label = font.render(text, 1, color)
+    surface.blit(label, (top_left_x + play_width/2 - (label.get_width() / 2), top_left_y + play_height/2 - label.get_height()/2))
+
+
+
 
