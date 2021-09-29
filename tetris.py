@@ -176,6 +176,13 @@ def draw_text_middle(text, size, color, surface):
     label = font.render(text, 1, color)
     surface.blit(label, (top_left_x + play_width/2 - (label.get_width() / 2), top_left_y + play_height/2 - label.get_height()/2))
 
-
+def draw_grid(surface, row,col):#Draws and blits the whole grid to the game window
+    sx = top_left_x
+    sy = top_left_y
+    for i in range(row):
+        pygame.draw.line(surface, (128,128,128), (sx, sy+ i*block_size), (sx + play_width, sy + i * block_size))  # horizontal lines
+        for j in range(col):
+            pygame.draw.line(surface, (128,128,128), (sx + j * block_size, sy), (sx + j *block_size, sy + play_height))  # vertical lines
+    pygame.draw.rect(surface, (255, 0, 0), (top_left_x, top_left_y, play_width, play_height), 4) #Drawing the red rect of the grid
 
 
