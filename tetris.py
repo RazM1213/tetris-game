@@ -244,6 +244,13 @@ def draw_window(surface,grid, score = 0):#Draws the whole game window
     sy = top_left_y + play_height/2 - 100 #Centered with the grid's vertical axis
     surface.blit(label, (sx + 15, sy + 220))
 
+    #Highscore title:
+    font = pygame.font.SysFont('comicsans',30)
+    label = font.render(f"HIGHSCORE:{max_score()} ", 1, (255,255,255))
+    sx = top_left_x + play_width + 50 #A little right to the game grid
+    sy = top_left_y + play_height/2 - 100 #Centered with the grid's vertical axis
+    surface.blit(label, (sx - 550, sy + 220))
+
     #Grid
     for i in range(len(grid)):
         for j in range(len(grid[i])):
@@ -334,6 +341,7 @@ def main(win):#Main game function
             next_piece = get_shape() #Generates a new random piece
             change_piece = False
             score += clear_rows(grid,locked_positions) * 10
+            update_score(score)
 
         draw_window(win, grid, score)
         draw_next_shape(next_piece, win)
