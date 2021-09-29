@@ -148,4 +148,15 @@ def convert_shape_format(shape): #Explaining the computer which shape we want to
 
     return positions
 
+def valid_space(shape, grid):#Checks if the shape is moving to an open space/ not getting out the board
+    accepted_pos = [[(j,i) for j in range(10) if grid[i][j] == (0,0,0)] for i in range(20)] #-->[[(0,1)], [(1,2)], [(2,2)] ........]
+    accepted_pos = [j for sub in accepted_pos for j in sub] #Flattenning the above to one dimension [(0,1), (1,2), (2,2) ......]
+
+    formatted = convert_shape_format(shape)
+    for pos in formatted:
+        if pos not in accepted_pos: #Checking whether the formatted shape is acceptable or taken
+            if pos[1] > -1: #Checks if the space is valid only when the piece starts falling on the screen - y value increments
+                return False
+    return True
+
 
