@@ -121,5 +121,15 @@ T = [['.....',
 shapes = [S, Z, I, O, J, L, T]
 shape_colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)] #RGB decimals
 
+#FUNCTIONS
+def create_grid(locked_pos={}):#Keeps the grid updated
+    grid = [[(0,0,0) for x in range(10)] for x in range(20)] #10X20 grid - 10 rows, and 20 columns in each row.
+    #To check if we have a shape freezing in a given location  - (x,y) - (row,column)
+    for row in range(len(grid)):
+        for column in range(len(grid[row])):
+            if (column,row) in locked_pos:
+                c = locked_pos[(column,row)]
+                grid[row][column] = c
+    return grid
 
 
