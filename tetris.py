@@ -319,3 +319,10 @@ def main(win):#Main game function
             run = False
 
     pygame.display.quit()
+
+#INITIALIZE GAME
+win = pygame.display.set_mode((s_width,s_height))
+pygame.display.set_caption('TETRIS')
+
+if __name__ == '__main__':
+    main(win)
