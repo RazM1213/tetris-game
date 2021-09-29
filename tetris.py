@@ -132,4 +132,20 @@ def create_grid(locked_pos={}):#Keeps the grid updated
                 grid[row][column] = c
     return grid
 
+def convert_shape_format(shape): #Explaining the computer which shape we want to visualize - from the shape formats list:
+    positions = []
+    format = shape.shape[shape.rotation % len(shape.shape)] #shape.shape -> the list of the possible shape rotations. Each time we press the up key, the shape.rotation adds 1 - and we get the next indexed shape rotation from the shape.shape list.
+
+    #Looping through every row in each shape rotation - to check where there are '.' and '0' - then do something based on it:
+    for i,line in enumerate(format): #i - num of line, line - the combination of dots and zeros from x axis
+        row = list(line)
+        for j,column in enumerate(row): #j- number of columns, column - combination of dots and zeros from y axis
+            if column == '0': #If encounter '0' in the column - add it's x and y to the shape's
+                positions.append((shape.x + j, shape.y + i))
+
+    for i, pos in enumerate(positions):
+        positions[i] = (pos[0] - 1, pos[1] - 2) #Pushing up the grid the values of the position - to make sure that we get out of the grid when a shape is at it's border.
+
+    return positions
+
 
