@@ -243,3 +243,79 @@ def draw_window(surface,grid, score = 0):#Draws the whole game window
     draw_grid(surface, 20, 10)
     #Border
     pygame.draw.rect(surface, (255, 0, 0), (top_left_x, top_left_y, play_width, play_height), 5)
+
+def main(win):#Main game function
+    locked_positions = {} #Required for the 'create_grid' function.
+    grid = create_grid(locked_positions) #Getting the game environment ready.
+    change_piece = False
+    run = True #Bool variable to determine whether the game is running or not.
+    current_piece = get_shape() #Generating a random piece
+    next_piece = get_shape() #Generating next random piece
+    clock = pygame.time.Clock()
+    fall_time = 0
+    fall_speed = 0.27 #How long it's gonna take before each shape starts falling
+    score = 0
+
+    while run:
+        grid = create_grid(locked_positions) #We are constantly updating the grid - locked_positions is a dict, containing key(position) and a value(color). This way we can update the positions' colors on the grid.
+        fall_time += clock.get_rawtime()
+        clock.tick()
+        if fall_time/1000 > fall_speed:
+            fall_time = 0
+            current_piece.y += 1 #Piece is falling down the screen
+            if not(valid_space(current_piece,grid)) and current_piece.y > 0:#If the piece is moving to a position it cant take
+                current_piece.y -= 1
+                change_piece = True #We move into a taken position OR we hit the bottom of the grid - we lock all positions and generate a new shape
+
+
+        for event in pygame.event.get(): #Iterating through the game possible events.
+            if event.type == pygame.QUIT: #Quitting the game
+                run = False #Game stops running
+
+            if event.type == pygame.KEYDOWN: #Checking for key press events
+                if event.key == pygame.K_RIGHT:#MOVE AGAINST X AXIS
+                    current_piece.x += 1
+                    if not (valid_space(current_piece,grid)):#If we move the piece to invalid place - pretend it didnt move
+                        current_piece.x -= 1 #By adding 1 after subtracting it
+
+                if event.key == pygame.K_LEFT:#MOVE WITH X AXIS
+                    current_piece.x -= 1
+                    if not (valid_space(current_piece,grid)):
+                        current_piece.x += 1 #By subtracting 1 after adding it
+
+                if event.key == pygame.K_UP:#ROTATE
+                    current_piece.rotation += 1
+                    if not (valid_space(current_piece,grid)):
+                        current_piece.rotation -= 1 #Canceling the rotate update
+
+                if event.key == pygame.K_DOWN:#SPEED UP THE PIECE FALL
+                    current_piece.y += 1
+                    if not (valid_space(current_piece,grid)):
+                        current_piece.y -= 1
+
+        shape_pos = convert_shape_format(current_piece)
+        for i in range(len(shape_pos)):#We see the color of the shape as it enters the grid, its' y value is > -1
+            x, y = shape_pos[i]
+            if y > -1:
+                grid[y][x] = current_piece.color
+
+        if change_piece:
+            for pos in shape_pos:
+                p = (pos[0], pos[1])
+                locked_positions[p] = current_piece.color #When the piece is locked - we update the grid with it's color
+            current_piece = next_piece
+            next_piece = get_shape() #Generates a new random piece
+            change_piece = False
+            score += clear_rows(grid,locked_positions) * 10
+
+        draw_window(win, grid, score)
+        draw_next_shape(next_piece, win)
+        pygame.display.update()
+
+        if check_lost(locked_positions):#If game is lost - finish the game
+            draw_text_middle("YOU LOST !",100, (255,255,255), win)
+            pygame.display.update()
+            pygame.time.delay(2000)
+            run = False
+
+    pygame.display.quit()
