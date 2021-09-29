@@ -1,5 +1,4 @@
 import pygame
-from Piece import Piece
 import random
 
 pygame.font.init()
@@ -120,6 +119,17 @@ T = [['.....',
 
 shapes = [S, Z, I, O, J, L, T]
 shape_colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)] #RGB decimals
+
+class Piece(object):
+    rows = 20
+    columns = 10
+
+    def __init__(self,column,row,shape):
+        self.x = column
+        self.y = row
+        self.shape = shape #The piece's shape out of the shapes list
+        self.color = shape_colors[shapes.index(shape)] #Color index accordingly to the shape index
+        self.rotation = 0 #For shapes that can be rotated - its the multidimensional index for the shapes formats
 
 #FUNCTIONS
 def create_grid(locked_pos={}):#Keeps the grid updated
