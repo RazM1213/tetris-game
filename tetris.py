@@ -186,3 +186,22 @@ def draw_grid(surface, row,col):#Draws and blits the whole grid to the game wind
     pygame.draw.rect(surface, (255, 0, 0), (top_left_x, top_left_y, play_width, play_height), 4) #Drawing the red rect of the grid
 
 
+def clear_rows(grid, locked):#"Deletes" completed row.
+    inc = 0
+    for i in range(len(grid)-1, -1, -1):
+        row = grid[i]
+        if (0,0,0) not in row: #If the color black doesn't appear in the row (the row is filled)
+            inc += 1 #Number of rows to shift down
+            ind = i
+            for j in range(len(row)): #Case there's no black square in the row:
+                try:
+                    del locked[(j,i)] #Delete the colored square
+                except:
+                    continue #Loop through the row to clear more squares
+    if inc > 0:
+        for key in sorted(list(locked), key=lambda x:x[1])[::-1]: #Sorts the locked list by it's elements
+            x,y = key #Locked position is a key - which has a unique color value
+            if y < ind: #Ex: We delete row with index of 17. Then we only move the rows which their y index is lower than 17.
+                newKey = (x,y + inc)
+                locked[newKey] = locked.pop(key)
+    return inc
