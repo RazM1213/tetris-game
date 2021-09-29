@@ -260,6 +260,17 @@ def max_score():
         score = lines[0].strip()
     return score
 
+def update_score(nscore):
+    with open('scores.txt', 'r') as f:
+        lines = f.readlines()
+        score = lines[0].strip()
+    with open('scores.txt', 'w') as f:
+        if nscore > int(score):
+            f.write(str(nscore))
+        else:
+            f.write(str(score))
+
+
 def main(win):#Main game function
     locked_positions = {} #Required for the 'create_grid' function.
     grid = create_grid(locked_positions) #Getting the game environment ready.
