@@ -219,3 +219,27 @@ def draw_next_shape(shape, surface):#Shows the next shape on the side of the gam
                 pygame.draw.rect(surface,shape.color,(sx + j*block_size, sy + i*block_size, block_size, block_size), 0)
 
     surface.blit(label,(sx+ 10, sy - block_size))
+
+def draw_window(surface,grid, score = 0):#Draws the whole game window
+    surface.fill((0,0,0))#Black fill
+    # Tetris Title
+    font = pygame.font.SysFont('comicsans', 60)
+    label = font.render('TETRIS', 1, (255,255,255))
+    surface.blit(label, (top_left_x + play_width / 2 - (label.get_width() / 2), 30)) #Blits the 'TETRIS' label to the screen
+
+    #Score title:
+    font = pygame.font.SysFont('comicsans',30)
+    label = font.render(f"SCORE:      {score} ", 1, (255,255,255))
+    sx = top_left_x + play_width + 50 #A little right to the game grid
+    sy = top_left_y + play_height/2 - 100 #Centered with the grid's vertical axis
+    surface.blit(label, (sx + 15, sy + 220))
+
+    #Grid
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            pygame.draw.rect(surface, grid[i][j], (top_left_x + j* 30, top_left_y + i * 30, 30, 30), 0)
+
+
+    draw_grid(surface, 20, 10)
+    #Border
+    pygame.draw.rect(surface, (255, 0, 0), (top_left_x, top_left_y, play_width, play_height), 5)
