@@ -1,4 +1,5 @@
 import pygame
+from Piece import Piece
 import random
 
 pygame.font.init()
