@@ -166,5 +166,9 @@ def check_lost(positions): #Lose - when any of the positions passed the top of t
             return True
     return False
 
+def get_shape(): #Creates an instance of the Piece class - giving it it's initial attributes.
+    return Piece(5, 0, random.choice(shapes))
+    #x=5 - The piece will fall from point (5,0)
+
 
 
